@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<u21600393_HW06.Models.order_items>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "Order", FormMethod.Post))
+
+{
+<p>
+    @*@model DateTime
+    Using Date Template
+    @Html.TextBox("", String.Format("{0:d}", Model.ToShortDateString()),
+      new { @class = "datefield", type = "date" })*@
+</p>
+}
+
+
+@foreach (var order in Model)
+{
+
+    <h2>Order @Html.DisplayFor(modelOrder => order.order_id) - @Html.DisplayFor(modelOrder => order.order.order_date)</h2>
+
+    <table class="table">
+        <tr>
+            <th>Product Name</th>
+            <th>List Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+
+        @foreach (var item in order)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.product.product_name))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.list_price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                </tr>
+            }
+
+    </table>
+}
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page => Url.Action("Index", "Order", new { Page, search = Request.QueryString["search"] }))
+
+
+
+@*<table class="table">
+        <tr>
+            <th>Product Name</th>
+            <th>List Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDetails.product_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDetails.list_price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orderItemsDetails.quantity)
+            </td>
+        </tr>
+    }
+
+    </table>*@

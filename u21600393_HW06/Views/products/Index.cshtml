@@ -1,0 +1,245 @@
+﻿@model PagedList.IPagedList<u21600393_HW06.Models.product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<h2>Index</h2>
+
+<div class="row">
+    
+    @using (Html.BeginForm("Index", "products", FormMethod.Post))
+
+    {
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" class="btn btn-info" value="Search " />
+        <button id="Create" type="button" class="btn btn-primary">Create</button>
+    </p>
+    }
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            year
+        </th>
+        <th>
+            List Price
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Category
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr data-id>
+            <td>
+                @Html.DisplayFor(modelItem => item.product_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.model_year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.list_price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.brand.brand_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category.category_name)
+            </td>
+            <td>
+                <button id="Edit" type="button" value=@(item.product_id) class="btn btn-info">Edit</button> |
+                <button id="Details" type="button" value=@item.product_id class="btn btn-primary">Details</button> |
+                <button id="Delete" type="button" value=@item.product_id class="btn btn-danger">Delete</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, Page => Url.Action("Index", "products", new { Page, search = Request.QueryString["search"] }))
+
+@*-------------------------------Create modal------------------------------------------------------------*@
+<div class="modal fade" role="dialog" id="CreateModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Create new prodeuct</h4>
+            </div>
+            <div id="createModalBody" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*----------------------------------------------Details modal--------------------------------------------*@
+<div class="modal fade" role="dialog" id="DetailsModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Product Details</h4>
+            </div>
+            <div id="detailsModalBody" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*----------------------------------------------Edit modal--------------------------------------------*@
+<div class="modal fade" role="dialog" id="EditModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Edit Product Details</h4>
+            </div>
+            <div id="EditModalBody" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*----------------------------------------------Delete modal--------------------------------------------*@
+<div class="modal fade" role="dialog" id="DeleteModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Delete Product</h4>
+            </div>
+            <div id="DeleteModalBody" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('click', '#Create', function (event) {
+
+                $.ajax({
+                    url: '@Url.Action("Create")',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#createModalBody').html(data);
+                        $('#CreateModal').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the service!")
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $(document).on('click', '#Details', function (event) {
+                
+                let Id = $('#Details').val()
+                
+
+                $.ajax({
+                    url: '@Url.Action("Details")',
+                    type: 'POST',
+                    data: {'id' : Id},
+                    success: function (data) {
+                        $('#detailsModalBody').html(data);
+                        $('#DetailsModal').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the service!")
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $(document).on('click', '#Edit', function (event) {
+
+
+                let Id = $('#Edit').val()
+                /*console.log(Id)*/
+
+                $.ajax({
+                    url: '@Url.Action("Edit")',
+                    type: 'GET',
+                    data: {'id' : Id},
+                    success: function (data) {
+                        $('#EditModalBody').html(data);
+                        $('#EditModal').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the service!")
+                    }
+                });
+            });
+        });
+
+         $(document).ready(function () {
+            $(document).on('click', '#Delete', function (event) {
+
+
+                let Id = $('#Delete').val()
+
+                $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: 'GET',
+                    data: {'id' : Id},
+                    success: function (data) {
+                        $('#DeleteModalBody').html(data);
+                        $('#DeleteModal').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the service!")
+                    }
+                });
+            });
+        });
+    </script>
+}

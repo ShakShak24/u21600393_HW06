@@ -1,0 +1,63 @@
+﻿@model u21600393_HW06.Models.product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.product_name)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name: 
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.product_name)
+        </dd>
+
+        <dt>
+            Year:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.model_year)
+        </dd>
+
+        <dt>
+            Price
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.list_price)
+        </dd>
+
+        <dt>
+            Brand
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.brand.brand_name)
+        </dd>
+
+        <dt>
+            Category
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category.category_name)
+        </dd>
+
+    </dl>
+
+    <table>
+        <tr>
+            <th>Quantity</th>
+        </tr>
+        @*<tr>
+            <td>@Html.DisplayFor(model => model.stock.qua)</td>
+        </tr>*@
+    </table>
+</div>
