@@ -3,39 +3,43 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Orders";
 }
 
 <h2>Index</h2>
 
 @using (Html.BeginForm("Index", "Order", FormMethod.Post))
-
 {
-<p>
-    @*@model DateTime
-    Using Date Template
-    @Html.TextBox("", String.Format("{0:d}", Model.ToShortDateString()),
-      new { @class = "datefield", type = "date" })*@
-</p>
+
+    <div class="form-group col-md-3" style="padding-left: 0">
+        <input type="date" placeholder="yyyy/mm/dd" name="search" class="form-control" />
+    </div>
+
+    <div class="form-group col-md-9" style="padding-left: 0">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
 }
 
+@{var repeat = true;}
 
-@foreach (var order in Model)
+@for (int i = 0; i <= 1; i++) 
 {
+    foreach (var order in Model)
+    {
 
-    <h2>Order @Html.DisplayFor(modelOrder => order.order_id) - @Html.DisplayFor(modelOrder => order.order.order_date)</h2>
+        <h2>Order @Html.DisplayFor(modelOrder => order.order_id) - @Html.DisplayFor(modelOrder => order.order.order_date)</h2>
 
-    <table class="table">
-        <tr>
-            <th>Product Name</th>
-            <th>List Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-        </tr>
+        <table class="table">
+            <tr>
+                <th>Product Name</th>
+                <th>List Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
 
-        @foreach (var item in order)
+            @foreach (var item in Model.Where(x => x.order_id == order.order_id))
             {
-
+                decimal total = item.quantity * item.list_price;
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.product.product_name))
@@ -46,10 +50,17 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.quantity)
                     </td>
+                    <td>
+                        @total
+                    </td>
                 </tr>
+
             }
 
-    </table>
+        </table>
+        
+    }
+
 }
 
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount

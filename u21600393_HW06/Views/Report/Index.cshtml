@@ -5,7 +5,7 @@
 }
 
 @{
-    int jan = 0, feb = 0, mar = 0, apr = 0, may = 0, jun = 0, jul = 0, aug = 0, sep = 0, oct = 0, nov = 0, dec = 0;
+    int january = 0, february = 0, march = 0, april = 0, may = 0, june = 0, july = 0, august = 0, september = 0, october = 0, november = 0, december = 0;
 
 }
 @foreach (var item in Model)
@@ -13,40 +13,40 @@
     switch (item.order_date.Month)
     {
         case 1:
-            jan++;
+            january++;
             break;
         case 2:
-            feb++;
+            february++;
             break;
         case 3:
-            mar++;
+            march++;
             break;
         case 4:
-            apr++;
+            april++;
             break;
         case 5:
             may++;
             break;
         case 6:
-            jun++;
+            june++;
             break;
         case 7:
-            jul++;
+            july++;
             break;
         case 8:
-            aug++;
+            august++;
             break;
         case 9:
-            sep++;
+            september++;
             break;
         case 10:
-            oct++;
+            october++;
             break;
         case 11:
-            nov++;
+            november++;
             break;
         case 12:
-            dec++;
+            december++;
             break;
     }
 
@@ -63,9 +63,9 @@
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: [{
                 label: 'Number of Mountain Bikes Sold',
-                data: [@jan, @feb, @mar, @apr, @may, @jun, @jul, @aug, @sep, @oct, @nov, @dec],
+                data: [@january, @february, @march, @april, @may, @june, @july, @august, @september, @october, @november, @december],
                 backgroundColor: [
-                    'rgba(237, 81, 81, 0.6)',
+                    'rgba(230, 81, 81, 0.6)',
                     'rgba(20, 158, 206, 0.6)',
                     'rgba(167, 198, 54, 0.6)',
                     'rgba(158, 85, 156, 0.6)',
